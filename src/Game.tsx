@@ -16,13 +16,14 @@ const useAudio = () => {
   const pushSoundRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    bgmRef.current = new Audio(`${import.meta.env.BASE_URL}sounds/bgm.mp3`);
+    // Use imported assets for audio to ensure they are processed by Vite
+    bgmRef.current = new Audio(new URL('/sounds/bgm.mp3', import.meta.url).href);
     bgmRef.current.loop = true;
     bgmRef.current.volume = 0.3;
 
-    moveSoundRef.current = new Audio(`${import.meta.env.BASE_URL}sounds/move.mp3`);
-    winSoundRef.current = new Audio(`${import.meta.env.BASE_URL}sounds/win.mp3`);
-    pushSoundRef.current = new Audio(`${import.meta.env.BASE_URL}sounds/push.mp3`);
+    moveSoundRef.current = new Audio(new URL('/sounds/move.mp3', import.meta.url).href);
+    winSoundRef.current = new Audio(new URL('/sounds/win.mp3', import.meta.url).href);
+    pushSoundRef.current = new Audio(new URL('/sounds/push.mp3', import.meta.url).href);
 
     const playBgm = () => {
       if (!isMuted) bgmRef.current?.play().catch(() => {});
