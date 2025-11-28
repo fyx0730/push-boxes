@@ -16,13 +16,13 @@ const useAudio = () => {
   const pushSoundRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    bgmRef.current = new Audio('/sounds/bgm.mp3');
+    bgmRef.current = new Audio(`${import.meta.env.BASE_URL}sounds/bgm.mp3`);
     bgmRef.current.loop = true;
     bgmRef.current.volume = 0.3;
 
-    moveSoundRef.current = new Audio('/sounds/move.mp3');
-    winSoundRef.current = new Audio('/sounds/win.mp3');
-    pushSoundRef.current = new Audio('/sounds/push.mp3');
+    moveSoundRef.current = new Audio(`${import.meta.env.BASE_URL}sounds/move.mp3`);
+    winSoundRef.current = new Audio(`${import.meta.env.BASE_URL}sounds/win.mp3`);
+    pushSoundRef.current = new Audio(`${import.meta.env.BASE_URL}sounds/push.mp3`);
 
     const playBgm = () => {
       if (!isMuted) bgmRef.current?.play().catch(() => {});
