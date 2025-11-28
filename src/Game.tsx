@@ -17,13 +17,30 @@ const useAudio = () => {
 
   useEffect(() => {
     // Use imported assets for audio to ensure they are processed by Vite
-    bgmRef.current = new Audio(new URL('/sounds/bgm.mp3', import.meta.url).href);
+    // For GitHub Pages, we need to ensure the path is correct relative to the base URL
+    // However, using `new URL(path, import.meta.url)` works for assets in `src`, 
+    // but for `public` folder, we should use the base URL or absolute paths if they are copied to root.
+    // In Vite with `base: '/push-boxes/'`, accessing `/sounds/...` might go to root domain.
+    // We should prepend the base URL manually or rely on relative paths if possible, 
+    // OR use `import` if we moved sounds to `src/assets`. 
+    // But `public` assets are served at root. 
+    // Let's try using a helper or just relative path 'sounds/...' which resolves relative to current page.
+    // But current page is `/push-boxes/`, so `sounds/bgm.mp3` -> `/push-boxes/sounds/bgm.mp3` which is correct.
+    // Let's change `/sounds/...` to `sounds/...` (remove leading slash).
+    
+    const getAudioPath = (path: string) => {
+       // Remove leading slash if present to make it relative to current page (which includes base)
+       const relativePath = path.startsWith('/') ? path.slice(1) : path;
+       return relativePath;
+    };
+
+    bgmRef.current = new Audio(getAudioPath('sounds/bgm.mp3'));
     bgmRef.current.loop = true;
     bgmRef.current.volume = 0.3;
 
-    moveSoundRef.current = new Audio(new URL('/sounds/move.mp3', import.meta.url).href);
-    winSoundRef.current = new Audio(new URL('/sounds/win.mp3', import.meta.url).href);
-    pushSoundRef.current = new Audio(new URL('/sounds/push.mp3', import.meta.url).href);
+    moveSoundRef.current = new Audio(getAudioPath('sounds/move.mp3'));
+    winSoundRef.current = new Audio(getAudioPath('sounds/win.mp3'));
+    pushSoundRef.current = new Audio(getAudioPath('sounds/push.mp3'));
 
     const playBgm = () => {
       if (!isMuted) bgmRef.current?.play().catch(() => {});
