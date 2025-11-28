@@ -8,7 +8,7 @@ import { ARControls } from './ARControls';
 const ANIMATION_DURATION = '200ms';
 
 // 音效管理 Hook (保持不变)
-const useAudio = (isWon: boolean) => {
+const useAudio = () => {
   const [isMuted, setIsMuted] = useState(false);
   const bgmRef = useRef<HTMLAudioElement | null>(null);
   const moveSoundRef = useRef<HTMLAudioElement | null>(null);
@@ -84,7 +84,7 @@ export const Game: React.FC = () => {
   
   // 动态计算格子大小
   const [cellSize, setCellSize] = useState(48);
-  const containerRef = useRef<HTMLDivElement>(null);
+  // const containerRef = useRef<HTMLDivElement>(null);
   const [arEnabled, setAREnabled] = useState(true);
 
   const isWonCheck = useCallback((currentBoxes: Position[]) => {
@@ -100,7 +100,7 @@ export const Game: React.FC = () => {
   }, [level]);
 
   const isWon = isWonCheck(boxes);
-  const { isMuted, setIsMuted, playMove, playPush, playWin } = useAudio(isWon);
+  const { isMuted, setIsMuted, playMove, playPush, playWin } = useAudio();
 
   useEffect(() => {
     if (isWon) {
